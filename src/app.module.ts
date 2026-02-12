@@ -8,20 +8,25 @@ import { User } from './users/entities/user.entity';
 import { AuthService } from './auth/auth.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
+import { DatabaseModule } from './database/database.module';
+import { ConfigModule } from '@nestjs/config';
+import { PhotoModule } from './photo/photo.module';
 
 @Module({
   imports: [
-    UsersModule,
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db.sqlite',
-      entities: [__dirname + '/**/*.entity{.ts, .js}'],
+      entities: [User],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([User]),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
+    UsersModule,
     AuthModule,
+    DatabaseModule,
+    PhotoModule,
   ],
   controllers: [AppController, AuthController],
-  providers: [AppService, UsersService, AuthService],
+  providers: [AppService],
 })
 export class AppModule {}

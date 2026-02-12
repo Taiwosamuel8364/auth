@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
+import { CreateUserDto } from './dto/createUser.dto';
 
 @Injectable()
 export class UsersService {
@@ -13,5 +14,18 @@ export class UsersService {
     return this.userRepository.findOne({
       where: { username },
     });
+  }
+
+  async createUser(user: CreateUserDto): Promise<User> {
+    const existingUser = await this.userRepository.findOne({
+      where: { username: user.username },
+    });
+
+    if (existingUser) {
+      throw new ConflictException();
+    }
+
+    const newUser = this.userRepository.create(user);
+    return this.userRepository.save(newUser);
   }
 }

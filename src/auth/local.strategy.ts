@@ -6,7 +6,7 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(private authservice: AuthService) {
-    super(); // CONFIG if you are using other strategy like facebbok or google
+    super(); // CONFIG if you are using other strategy like facebook or google
   }
 
   async validate(username: string, password: string): Promise<any> {
