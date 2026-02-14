@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { PhotoService } from './photo.service';
-import { photoProviders } from './photo.providers';
 import { DatabaseModule } from 'src/database/database.module';
+import { PhotoController } from './photo.controller';
 
 @Module({
-  providers: [...photoProviders, PhotoService],
+  providers: [PhotoService],
   imports: [DatabaseModule],
   exports: [PhotoService],
+  controllers: [PhotoController],
 })
 export class PhotoModule {}

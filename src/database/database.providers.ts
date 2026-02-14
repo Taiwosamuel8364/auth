@@ -1,5 +1,7 @@
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
+import { Photo } from 'src/photo/entities/photo.entity';
+import { User } from 'src/users/entities/user.entity';
 
 export const databaseProviders = [
   {
@@ -19,5 +21,15 @@ export const databaseProviders = [
       return dataSource.initialize();
     },
     inject: [ConfigService],
+  },
+  {
+    provide: 'PHOTO_REPOSITORY',
+    useFactory: (dataSource: DataSource) => dataSource.getRepository(Photo),
+    inject: ['DATA_SOURCE'],
+  },
+  {
+    provide: 'USER_REPOSITORY',
+    useFactory: (dataSource: DataSource) => dataSource.getRepository(User),
+    inject: ['DATA_SOURCE'],
   },
 ];
